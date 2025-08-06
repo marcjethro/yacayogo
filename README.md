@@ -1,5 +1,5 @@
 # Yacayogo
-*nominative form of [yācayoga](https://www.wisdomlib.org/definition/yacayoga) (adj. accessible to begging; ready to comply with another's request.)*
+*[Pali] [yācayoga](https://www.wisdomlib.org/definition/yacayoga): (adj.) accessible to begging; ready to comply with another's request.*
 # Demo
 ## MS Notepad
 ![Notepad Demo](demoNotepad.gif)
