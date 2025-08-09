@@ -26,7 +26,7 @@ public class Typer {
 	private void respond() {
 		for (char c : this.response.toCharArray()) {
 			keyboard.type(c);
-			robot.delay(10 + (int) (Math.random()*20));
+			robot.delay(5 + (int) (Math.random()*10));
 		}
 	}
 
