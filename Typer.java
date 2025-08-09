@@ -8,7 +8,7 @@ import static java.awt.event.KeyEvent.VK_C;
 public class Typer {
 	Robot robot;
 	Keyboard keyboard;
-	boolean processing = false;
+	String response = null;
 
 	Typer() {
 		try {
@@ -19,38 +19,62 @@ public class Typer {
 		 }
 	}
 
-	public void respond(String string) {
-		while (this.processing) {
-			robot.delay(100);
-		}
-		for (int i = 0; i < 13; i++) {
-			keyboard.doType(VK_BACK_SPACE);
-			robot.delay(25);
-		}
-		for (char c : string.toCharArray()) {
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+	private void respond() {
+		for (char c : this.response.toCharArray()) {
 			keyboard.type(c);
 			robot.delay(10 + (int) (Math.random()*20));
 		}
 	}
 
-	public void process() {
-		this.processing = true;
+	public void backspace(int num) {
+		for (int i = 0; i < num; i++) {
+			keyboard.doType(VK_BACK_SPACE);
+			robot.delay(25);
+		}
+	}
+
+	public void idk() {
+		for (char c : "Timeout! Please try again.".toCharArray()) {
+			keyboard.type(c);
+			robot.delay(10 + (int) (Math.random()*20));
+		}
+	}
+
+	public boolean process() {
 		keyboard.doType(VK_RIGHT);
 		for (char c : "\n\nprocessing".toCharArray()) {
 			keyboard.type(c);
 			robot.delay(100);
 		}
+
+		int backspaces = "processing".length();
 		robot.delay(1000);
-		for (char c : "...".toCharArray()) {
-			keyboard.type(c);
+		for (int i=0; i<5; i++) {
+			if (this.response != null) {
+				this.backspace(backspaces);
+				this.respond();
+				return true;
+			}
+			keyboard.type('.');
+			backspaces += 1;
 			robot.delay(1000);
 		}
-		this.processing = false;
+		return false;
 	}
 
-	public void copy() {
-		robot.delay(500);
-		keyboard.doType(VK_CONTROL, VK_C);
-		robot.delay(500);
+	public static void copy() {
+		try {
+			Robot copyRobot = new Robot();
+			Keyboard copyKeyboard = new Keyboard(copyRobot);
+			copyRobot.delay(500);
+			copyKeyboard.doType(VK_CONTROL, VK_C);
+			copyRobot.delay(500);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
 	}
 }

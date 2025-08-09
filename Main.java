@@ -33,7 +33,7 @@ public class Main {
 
 class Yacayogo extends NativeKeyAdapter{
 	boolean running = false;
-	String response = null;
+
 	@Override
 	public void nativeKeyPressed(NativeKeyEvent e) {
 		if (this.running) {
@@ -43,21 +43,23 @@ class Yacayogo extends NativeKeyAdapter{
 		String keyText = NativeKeyEvent.getKeyText(e.getKeyCode());
 		String modifierText = NativeInputEvent.getModifiersText(modifiers);
 		if (modifierText.equals("Shift+Ctrl+Alt") && keyText == "Y") {
-			final Typer typer = new Typer();
-			typer.copy();
+			Typer.copy();
 			String clipText = ClipboardReader.getClipboardText();
-			if (clipText != null) {
-				this.running = true;
-				this.response = null;
-				System.out.println("Query: " + clipText);
-				QueryAI.asyncRequest(clipText, (json) -> {
-					this.response = json;
-					this.running = false;
-					System.out.println("Responding...");
-					typer.respond(this.response);
-				});
-				typer.process();
-			}
+
+			if (clipText == null) return;
+
+			this.running = true;
+			final Typer typer = new Typer();
+			System.out.println("Query: " + clipText);
+			QueryAI.asyncRequest(clipText, (response) -> {
+				System.out.println("Response found!");
+				typer.setResponse(response);
+			});
+			if (!typer.process()) {
+				typer.backspace(15);
+				typer.idk();
+			};
+			this.running = false;
 		}
 	}
 }
