@@ -56,7 +56,7 @@ class Yacayogo extends NativeKeyAdapter{
 				typer.setResponse(response);
 			});
 			if (!typer.process()) {
-				typer.backspace(15);
+				typer.backspace(19);
 				typer.idk();
 			};
 			this.running = false;
