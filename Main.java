@@ -28,6 +28,8 @@ public class Main {
 		} catch (NativeHookException exc) {
 			exc.printStackTrace();
 		}
+
+		System.out.println("\nYacayoga: (adj.) ready to comply with another's request.\n");
 	}
 }
 
@@ -52,10 +54,11 @@ class Yacayogo extends NativeKeyAdapter{
 			final Typer typer = new Typer();
 			System.out.println("Query: " + clipText);
 			QueryAI.asyncRequest(clipText, (response) -> {
-				System.out.println("Response found!");
+				System.out.println("Response found!\n");
 				typer.setResponse(response);
 			});
 			if (!typer.process()) {
+				System.out.println("Timeout!");
 				typer.backspace(19);
 				typer.idk();
 			};
