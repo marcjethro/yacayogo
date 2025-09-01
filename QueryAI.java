@@ -57,6 +57,7 @@ public class QueryAI {
 		client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
 			.thenApply(HttpResponse::body)
 			.thenAccept((json) -> {
+				System.out.println("Server Responded!");
 				JsonElement jsonTree = JsonParser.parseString(json);
 				queryHandler.handle(jsonTree
 					.getAsJsonObject()

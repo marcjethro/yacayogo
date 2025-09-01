@@ -54,7 +54,7 @@ class Yacayogo extends NativeKeyAdapter{
 			final Typer typer = new Typer();
 			System.out.println("Query: " + clipText);
 			QueryAI.asyncRequest(clipText, (response) -> {
-				System.out.println("Response found!\n");
+				System.out.println("Valid Response!\n");
 				typer.setResponse(response);
 			});
 			if (!typer.process()) {
