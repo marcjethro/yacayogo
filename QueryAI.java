@@ -27,26 +27,29 @@ public class QueryAI {
 			return;
 		}
 
-		int max_tokens = 512;
-
 		queryHandler = handler;
 
 		JsonObject jsonRoot = new JsonObject();
-		jsonRoot.addProperty("model",  "meta-llama/Llama-Vision-Free");
-		JsonArray messagesArray = new JsonArray();
-		JsonObject messageObj = new JsonObject();
-		messageObj.addProperty("role", "user");
-		messageObj.addProperty("content", content);
-		messagesArray.add(messageObj);
-		jsonRoot.add("messages",  messagesArray);
-		jsonRoot.addProperty("max_tokens", max_tokens);
+		JsonArray contentsArray = new JsonArray();
+		JsonObject contentObj = new JsonObject();
+		JsonArray partsArray = new JsonArray();
+		JsonObject partObj = new JsonObject();
+
+		partObj.addProperty("text", content);
+
+		partsArray.add(partObj);
+		contentObj.add("parts", partsArray);
+		contentsArray.add(contentObj);
+
+		jsonRoot.add("contents",  contentsArray);
+
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		String body = gson.toJson(jsonRoot);
 
 		var request = HttpRequest.newBuilder()
-		.uri(URI.create("https://api.together.xyz/v1/chat/completions"))
+		.uri(URI.create("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"))
 		.header("Content-Type", "application/json")
-		.header("Authorization", "Bearer " + apiKey)
+		.header("X-goog-api-key", apiKey)
 		.POST(HttpRequest.BodyPublishers.ofString(body))
 		.build();
 		var client = HttpClient.newHttpClient();
@@ -57,12 +60,15 @@ public class QueryAI {
 				JsonElement jsonTree = JsonParser.parseString(json);
 				queryHandler.handle(jsonTree
 					.getAsJsonObject()
-					.getAsJsonArray("choices")
+					.getAsJsonArray("candidates")
 					.get(0)
 					.getAsJsonObject()
-					.get("message")
-					.getAsJsonObject()
 					.get("content")
+					.getAsJsonObject()
+					.getAsJsonArray("parts")
+					.get(0)
+					.getAsJsonObject()
+					.get("text")
 					.getAsString());
 			});
 	}
