@@ -53,7 +53,7 @@ public class Typer {
 
 		int backspaces = "processing".length();
 		robot.delay(1000);
-		for (int i=0; i<9; i++) {
+		for (int i=0; i<14; i++) {
 			if (this.response != null) {
 				this.backspace(backspaces);
 				this.respond();
