@@ -47,7 +47,7 @@ public class QueryAI {
 		String body = gson.toJson(jsonRoot);
 
 		var request = HttpRequest.newBuilder()
-		.uri(URI.create("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"))
+		.uri(URI.create("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"))
 		.header("Content-Type", "application/json")
 		.header("X-goog-api-key", apiKey)
 		.POST(HttpRequest.BodyPublishers.ofString(body))
